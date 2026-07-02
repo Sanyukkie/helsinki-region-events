@@ -3,74 +3,110 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0e1116" />
+  <meta name="theme-color" content="#0C0C0E" />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
-  <title>Helsinki Region Events — What's on in Helsinki, Espoo &amp; Vantaa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="styles.css" />
+  <title>NYT. — What's on in Helsinki, Espoo &amp; Vantaa</title>
 </head>
 <body>
-  <header class="header">
-    <div class="header-inner">
-      <div class="brand">
-        <span class="brand-mark">HKI</span>
-        <h1>Helsinki Events</h1>
-      </div>
-      <div class="search-wrap">
-        <input id="search" type="search" placeholder="Search events… (e.g. jazz, sauna, teatteri)" autocomplete="off" />
-      </div>
-    </div>
-    <nav class="filters">
-      <div class="filter-row" id="date-filters">
-        <button class="chip active" data-range="today">Today</button>
-        <button class="chip" data-range="tomorrow">Tomorrow</button>
-        <button class="chip" data-range="weekend">This weekend</button>
-        <button class="chip" data-range="week">Next 7 days</button>
-        <button class="chip" data-range="all">All upcoming</button>
-      </div>
-      <div class="filter-row" id="category-filters">
-        <button class="chip cat active" data-category="">All</button>
-        <button class="chip cat" data-category="music">🎵 Music</button>
-        <button class="chip cat" data-category="kids">👶 Kids</button>
-        <button class="chip cat" data-category="student">🎓 Student &amp; club</button>
-        <button class="chip cat" data-category="theatre">🎭 Theatre</button>
-        <button class="chip cat" data-category="dance">💃 Dance</button>
-        <button class="chip cat" data-category="visualarts">🖼️ Visual arts</button>
-        <button class="chip cat" data-category="sports">⚽ Sports</button>
-        <button class="chip cat" data-category="food">🍽️ Food</button>
-        <button class="chip" id="free-toggle">Free only</button>
-        <button class="chip" id="ongoing-toggle">🏛️ Exhibitions &amp; ongoing</button>
-      </div>
-      <div class="filter-row view-row">
-        <span id="result-count" class="result-count"></span>
-        <div class="view-toggle">
-          <button id="view-list" class="chip active">List</button>
-          <button id="view-map" class="chip">Map</button>
-          <button id="view-saved" class="chip">★ Saved</button>
+  <div class="app">
+
+    <!-- ===== HEADER ===== -->
+    <header class="header" id="header">
+      <div class="header-top">
+        <div class="brand">
+          <div class="brand-word">NYT<span class="brand-dot">.</span></div>
+          <div class="brand-tag mono">PÄÄKAUPUNKISEUTU — WHAT'S ON</div>
+        </div>
+        <div class="header-actions">
+          <button class="icon-btn" id="search-toggle" aria-label="Search">⌕</button>
+          <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme">◐</button>
         </div>
       </div>
+
+      <div class="search-row" id="search-row" hidden>
+        <input id="search" type="search" placeholder="Search events, venues…" autocomplete="off" />
+      </div>
+
+      <div class="pill-row scr" id="pill-row">
+        <button class="pill" id="open-filters">▦ Filters<span class="pill-count" id="filter-count" hidden></span></button>
+        <button class="pill" id="date-pill">Today ▾</button>
+        <button class="pill" id="free-pill">Free</button>
+        <button class="pill" id="ongoing-pill">Ongoing</button>
+      </div>
+
+      <div class="summary-row" id="summary-row" hidden>
+        <span class="mono summary-count" id="result-count"></span>
+        <span id="summary-tags"></span>
+      </div>
+    </header>
+
+    <!-- ===== CONTENT ===== -->
+    <main class="content scr" id="content">
+      <div id="status" class="status" hidden></div>
+      <div id="events"></div>
+      <div id="map-wrap" hidden>
+        <div id="map"></div>
+        <div class="map-note mono" id="map-note" hidden></div>
+        <div class="map-sel" id="map-sel" hidden></div>
+      </div>
+      <div class="load-more-wrap">
+        <button id="load-more" class="load-more" hidden>Load more</button>
+      </div>
+    </main>
+
+    <!-- ===== BOTTOM NAV ===== -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" id="nav-feed"><span class="nav-ico">≣</span>Feed</button>
+      <button class="nav-btn" id="nav-map"><span class="nav-ico">◉</span>Map</button>
+      <button class="nav-btn" id="nav-saved"><span class="nav-ico">★</span>Saved<span class="nav-badge" id="saved-badge" hidden></span></button>
     </nav>
-  </header>
 
-  <main>
-    <div id="status" class="status" hidden></div>
-    <div id="events" class="grid"></div>
-    <div id="map" hidden></div>
-    <div class="load-more-wrap">
-      <button id="load-more" class="load-more" hidden>Load more</button>
+    <!-- ===== FILTER SHEET ===== -->
+    <div class="backdrop" id="sheet-backdrop" hidden></div>
+    <div class="sheet" id="filter-sheet" hidden>
+      <div class="sheet-head">
+        <div class="sheet-title">Filters</div>
+        <button class="link-btn" id="reset-filters">Reset all</button>
+      </div>
+      <div class="sheet-body scr">
+        <div class="mono sec-label">WHEN</div>
+        <div class="chip-wrap" id="sheet-dates"></div>
+
+        <div class="mono sec-label">CATEGORIES</div>
+        <div class="mono sec-hint">Tap once to <span class="hint-inc">✓ include</span> · again to <span class="hint-exc">⦸ hide</span> · again to clear.</div>
+        <div class="chip-wrap" id="sheet-cats"></div>
+        <div class="hidden-box" id="hidden-box" hidden>
+          <div class="mono hidden-label">⦸ HIDDEN FROM YOUR FEED</div>
+          <div class="chip-wrap" id="hidden-cats"></div>
+        </div>
+
+        <div class="mono sec-label">MORE</div>
+        <button class="toggle-row" id="sheet-free">
+          <span class="toggle-name">Free events only</span>
+          <span class="switch"><span class="knob"></span></span>
+        </button>
+        <button class="toggle-row" id="sheet-ongoing">
+          <span class="toggle-name">Exhibitions &amp; ongoing<br /><span class="mono toggle-sub">long-running · ending soonest first</span></span>
+          <span class="switch"><span class="knob"></span></span>
+        </button>
+      </div>
+      <div class="sheet-foot">
+        <button class="cta" id="close-filters">Show events</button>
+      </div>
     </div>
-  </main>
 
-  <footer class="footer">
-    Data: <a href="https://api.hel.fi/linkedevents/v1/" target="_blank" rel="noopener">Helsinki Linked Events</a> (open data) + <a href="https://developer.ticketmaster.com/" target="_blank" rel="noopener">Ticketmaster Discovery</a> · aggregated &amp; deduplicated · Prototype
-  </footer>
+    <!-- ===== DETAIL SHEET ===== -->
+    <div class="backdrop" id="detail-backdrop" hidden></div>
+    <div class="sheet detail-sheet scr" id="detail-sheet" hidden></div>
 
-  <div id="modal" class="modal" hidden>
-    <div class="modal-card" role="dialog" aria-modal="true">
-      <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
-      <div id="modal-body"></div>
-    </div>
+    <!-- toast -->
+    <div class="toast" id="toast" hidden></div>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

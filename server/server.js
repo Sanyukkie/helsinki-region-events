@@ -34,8 +34,18 @@ function apiEvents(res, query) {
   if (start) { where.push("COALESCE(end_time, start_time) >= ?"); params.push(`${start}T00:00:00`); }
   const end = query.get("end");
   if (end) { where.push("start_time <= ?"); params.push(`${end}T23:59:59`); }
-  const category = query.get("category");
-  if (category) { where.push("categories LIKE ?"); params.push(`%"${category.replace(/[^a-z]/g, "")}"%`); }
+  const cleanCats = (v) => (v || "").split(",").map((c) => c.replace(/[^a-z]/g, "")).filter(Boolean);
+  // categories=a,b → include any of (OR); exclude=c,d → hide all of (AND NOT)
+  const include = cleanCats(query.get("categories") || query.get("category"));
+  if (include.length) {
+    where.push(`(${include.map(() => "categories LIKE ?").join(" OR ")})`);
+    params.push(...include.map((c) => `%"${c}"%`));
+  }
+  const exclude = cleanCats(query.get("exclude"));
+  for (const c of exclude) {
+    where.push("categories NOT LIKE ?");
+    params.push(`%"${c}"%`);
+  }
   const text = query.get("text");
   if (text) {
     where.push("(title LIKE ? OR description LIKE ? OR venue_name LIKE ?)");

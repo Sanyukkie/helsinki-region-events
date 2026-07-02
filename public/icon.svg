@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="96" fill="#ffd429"/>
-  <text x="256" y="300" font-family="Segoe UI, system-ui, sans-serif" font-size="150" font-weight="800" text-anchor="middle" fill="#111318" letter-spacing="4">HKI</text>
-  <text x="256" y="400" font-family="Segoe UI, system-ui, sans-serif" font-size="64" font-weight="600" text-anchor="middle" fill="#111318">events</text>
+  <rect width="512" height="512" rx="96" fill="#0C0C0E"/>
+  <text x="46" y="310" font-family="Space Grotesk, Segoe UI, system-ui, sans-serif" font-size="170" font-weight="700" letter-spacing="-8" fill="#F3F1EA">NYT<tspan fill="#C9F24E">.</tspan></text>
+  <text x="50" y="400" font-family="ui-monospace, Menlo, monospace" font-size="34" letter-spacing="8" fill="#C9F24E">WHAT'S ON</text>
 </svg>

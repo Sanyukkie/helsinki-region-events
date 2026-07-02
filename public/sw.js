@@ -1,4 +1,4 @@
-const CACHE = "hki-events-v1";
+const CACHE = "hki-events-v3";
 const STATIC = ["/", "/styles.css", "/app.js", "/manifest.json", "/icon.svg"];
 
 self.addEventListener("install", (e) => {
@@ -18,7 +18,20 @@ self.addEventListener("fetch", (e) => {
   if (url.origin !== location.origin) return; // CDN assets, map tiles: browser default
   if (url.pathname.startsWith("/api/")) return; // live data: always network
 
-  // static shell: cache-first with background refresh
+  // pages: network-first so a new deploy shows up on the next load; cache only as offline fallback
+  if (e.request.mode === "navigate") {
+    e.respondWith(
+      fetch(e.request)
+        .then((res) => {
+          if (res.ok) caches.open(CACHE).then((c) => c.put(e.request, res.clone()));
+          return res;
+        })
+        .catch(() => caches.match(e.request))
+    );
+    return;
+  }
+
+  // other static assets: cache-first with background refresh
   e.respondWith(
     caches.match(e.request).then((cached) => {
       const fetched = fetch(e.request)

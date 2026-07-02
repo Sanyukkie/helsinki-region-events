@@ -1,11 +1,11 @@
 {
-  "name": "Helsinki Region Events",
-  "short_name": "HKI Events",
+  "name": "NYT. — Helsinki Region Events",
+  "short_name": "NYT.",
   "description": "What's on in Helsinki, Espoo & Vantaa — one deduplicated feed",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0e1116",
-  "theme_color": "#0e1116",
+  "background_color": "#0C0C0E",
+  "theme_color": "#0C0C0E",
   "icons": [
     { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
   ]
