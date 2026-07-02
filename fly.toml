@@ -1,0 +1,19 @@
+# Fly.io config — run `fly launch --no-deploy` once, it will adopt this file.
+app = "hki-events"          # pick a globally unique name when fly launch asks
+primary_region = "arn"      # Stockholm — closest region to Finland
+
+[http_service]
+  internal_port = 4173
+  force_https = true
+  # the app must stay running for the 15-min incremental sync — don't scale to zero
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+
+[mounts]
+  source = "hki_data"       # persistent volume so the SQLite db survives deploys
+  destination = "/app/data"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
