@@ -351,7 +351,7 @@ body {
 }
 
 .map-note {
-  position: absolute; top: 14px; left: 14px; z-index: 500;
+  position: absolute; top: 14px; left: 14px; z-index: 1010;
   font-size: 9px; letter-spacing: .5px;
   color: var(--text);
   background: var(--surface);
@@ -360,7 +360,7 @@ body {
 }
 
 .map-sel {
-  position: absolute; left: 14px; right: 14px; bottom: 18px; z-index: 500;
+  position: absolute; left: 14px; right: 14px; bottom: 18px; z-index: 1010;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 15px;
@@ -405,14 +405,15 @@ body {
 }
 
 /* ===== sheets ===== */
+/* sheets must clear Leaflet's internal z-indexes (panes up to 700, controls 1000) */
 .backdrop {
-  position: absolute; inset: 0; z-index: 40;
+  position: absolute; inset: 0; z-index: 1100;
   background: rgba(0,0,0,.5);
   animation: fadeIn .18s;
 }
 
 .sheet {
-  position: absolute; left: 0; right: 0; bottom: 0; z-index: 41;
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 1101;
   background: var(--bg);
   border-top: 1px solid var(--line);
   border-radius: 22px 22px 0 0;
@@ -514,8 +515,8 @@ body {
 }
 
 /* ===== detail sheet ===== */
-.detail-sheet { z-index: 51; max-height: 93%; overflow-y: auto; display: block; animation: sheetUp .26s cubic-bezier(.2,.8,.2,1); }
-#detail-backdrop { z-index: 50; }
+.detail-sheet { z-index: 1151; max-height: 93%; overflow-y: auto; display: block; animation: sheetUp .26s cubic-bezier(.2,.8,.2,1); }
+#detail-backdrop { z-index: 1150; }
 
 .detail-media { position: relative; height: 230px; background-size: cover; background-position: center; }
 .detail-media-fade { position: absolute; inset: 0; background: linear-gradient(0deg, var(--bg) 1%, transparent 40%); }
@@ -592,7 +593,7 @@ body {
 .toast {
   position: absolute; left: 50%; bottom: 88px;
   transform: translateX(-50%);
-  z-index: 60;
+  z-index: 1200;
   background: var(--text); color: var(--bg);
   font: 600 13px "Space Grotesk", sans-serif;
   padding: 10px 18px; border-radius: 11px;
