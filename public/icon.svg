@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#ffd429"/>
+  <text x="256" y="300" font-family="Segoe UI, system-ui, sans-serif" font-size="150" font-weight="800" text-anchor="middle" fill="#111318" letter-spacing="4">HKI</text>
+  <text x="256" y="400" font-family="Segoe UI, system-ui, sans-serif" font-size="64" font-weight="600" text-anchor="middle" fill="#111318">events</text>
+</svg>

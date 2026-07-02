@@ -1,0 +1,12 @@
+{
+  "name": "helsinki-events",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Helsinki events aggregator — Linked Events + Ticketmaster, deduplicated",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server/server.js",
+    "ingest": "node --env-file-if-exists=.env server/ingest.js",
+    "test": "node --test"
+  }
+}

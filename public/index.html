@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0e1116" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <title>Helsinki Region Events — What's on in Helsinki, Espoo &amp; Vantaa</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-mark">HKI</span>
+        <h1>Helsinki Events</h1>
+      </div>
+      <div class="search-wrap">
+        <input id="search" type="search" placeholder="Search events… (e.g. jazz, sauna, teatteri)" autocomplete="off" />
+      </div>
+    </div>
+    <nav class="filters">
+      <div class="filter-row" id="date-filters">
+        <button class="chip active" data-range="today">Today</button>
+        <button class="chip" data-range="tomorrow">Tomorrow</button>
+        <button class="chip" data-range="weekend">This weekend</button>
+        <button class="chip" data-range="week">Next 7 days</button>
+        <button class="chip" data-range="all">All upcoming</button>
+      </div>
+      <div class="filter-row" id="category-filters">
+        <button class="chip cat active" data-category="">All</button>
+        <button class="chip cat" data-category="music">🎵 Music</button>
+        <button class="chip cat" data-category="kids">👶 Kids</button>
+        <button class="chip cat" data-category="student">🎓 Student &amp; club</button>
+        <button class="chip cat" data-category="theatre">🎭 Theatre</button>
+        <button class="chip cat" data-category="dance">💃 Dance</button>
+        <button class="chip cat" data-category="visualarts">🖼️ Visual arts</button>
+        <button class="chip cat" data-category="sports">⚽ Sports</button>
+        <button class="chip cat" data-category="food">🍽️ Food</button>
+        <button class="chip" id="free-toggle">Free only</button>
+        <button class="chip" id="ongoing-toggle">🏛️ Exhibitions &amp; ongoing</button>
+      </div>
+      <div class="filter-row view-row">
+        <span id="result-count" class="result-count"></span>
+        <div class="view-toggle">
+          <button id="view-list" class="chip active">List</button>
+          <button id="view-map" class="chip">Map</button>
+          <button id="view-saved" class="chip">★ Saved</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div id="status" class="status" hidden></div>
+    <div id="events" class="grid"></div>
+    <div id="map" hidden></div>
+    <div class="load-more-wrap">
+      <button id="load-more" class="load-more" hidden>Load more</button>
+    </div>
+  </main>
+
+  <footer class="footer">
+    Data: <a href="https://api.hel.fi/linkedevents/v1/" target="_blank" rel="noopener">Helsinki Linked Events</a> (open data) + <a href="https://developer.ticketmaster.com/" target="_blank" rel="noopener">Ticketmaster Discovery</a> · aggregated &amp; deduplicated · Prototype
+  </footer>
+
+  <div id="modal" class="modal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true">
+      <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
